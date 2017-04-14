@@ -7,7 +7,7 @@ from .models import Frog
 @login_required
 def index(request):
     num_frogs = Frog.objects.count()
-    frogs = Frog.objects
+    owner_frogs = Frog.objects.filter(owner=request.user).get()
     return render(request, 'index.html', context={'word': 'atatattatat',
-                                                  'num_frogs': num_frogs, 
-                                                  'frogs': frogs})
+                                                  'num_frogs': num_frogs,
+                                                  'owner_frogs': owner_frogs})
