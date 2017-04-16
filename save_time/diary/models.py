@@ -11,7 +11,6 @@ class Day(models.Model):
     awards for completing tasks.
     """
     date = models.DateField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return str(self.date)
@@ -23,7 +22,7 @@ class Challenge(models.Model):
     """
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    day = models.OneToOneField(Day, on_delete=models.SET_NULL, null=True, blank=True)
+    day = models.ForeignKey(Day, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -34,6 +33,7 @@ class Task(models.Model):
     Model for tasks of the day. Include hard and flexible tasks.
     """
     name = models.CharField(max_length=200)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     TASK_TYPE = (
         ('f', 'Flexible'),
@@ -53,7 +53,7 @@ class Frog(models.Model):
     name = models.CharField(max_length=200, help_text="Eat your frog!")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     done = models.BooleanField(default=False)
-    day = models.ForeignKey(Day, on_delete=models.SET_NULL, null=True, blank=True)
+    day = models.ManyToManyField(Day, blank=True)
 
     def __str__(self):
         return self.name
@@ -90,7 +90,7 @@ class Memory(models.Model):
     """
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    day = models.OneToOneField(Day, on_delete=models.SET_NULL, null=True, blank=True)
+    day = models.ForeignKey(Day, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name

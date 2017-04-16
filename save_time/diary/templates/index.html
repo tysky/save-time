@@ -5,14 +5,19 @@
     <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
 {% endif %}
 <li>{{word}}</li>
-<h2>Day: {{day}}</h2>
-<h2>Day.frog: {{day.frog}}</h2>
-<h2>User.frog: {{day.user}}</h2>
-{% for fr in day_frog %}
-    <h2>FROG iterable: {{ fr.frog }}</h2>
+<h2>Day: {{day.date}}</h2>
+{% for fr in frogs %}
+    <h2>FROG iterable: {{ fr }}</h2>
+    <h4>done?: {{ fr.done }}</h4>
 {% endfor %}
 
-{#<h2>Day_frog: {{day_frog}}</h2>#}
 <h3>Frogs: {{num_frogs}}</h3>
-<h3>Owner Frogs: {{owner_frogs}}</h3>
+<h3>Frogs: {{frogs}}</h3>
 
+Your tasks!
+<h3>{% for t in tasks %}
+    <ul>
+        <li>{{ t }} ({{ t.task_type }})</li>
+    </ul>
+{% endfor %}
+</h3>
