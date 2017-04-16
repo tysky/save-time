@@ -1,0 +1,17 @@
+{% if user.is_authenticated %}
+<h1>HELLO {{ user }}</h1>
+<a href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+{% else %}
+    <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
+{% endif %}
+<h2>Day: {{day}}</h2>
+<h2>challenge: {{day.challenge}}</h2>
+{#{% for fr in day_frog %}#}
+{#    <h2>FROG iterable: {{ fr.frog }}</h2>#}
+{#{% endfor %}#}
+
+<h2>task: {{day.task}}</h2>
+<h2>frog: {{day.frog}}</h2>
+<h2>steak: {{day.steak}}</h2>
+<h2>joy: {{day.joy}}</h2>
+

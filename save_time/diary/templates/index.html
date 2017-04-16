@@ -8,7 +8,11 @@
 <h2>Day: {{day}}</h2>
 <h2>Day.frog: {{day.frog}}</h2>
 <h2>User.frog: {{day.user}}</h2>
-<h2>Day_frog: {{day_frog}}</h2>
+{% for fr in day_frog %}
+    <h2>FROG iterable: {{ fr.frog }}</h2>
+{% endfor %}
+
+{#<h2>Day_frog: {{day_frog}}</h2>#}
 <h3>Frogs: {{num_frogs}}</h3>
 <h3>Owner Frogs: {{owner_frogs}}</h3>
 
