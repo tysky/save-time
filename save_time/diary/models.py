@@ -12,12 +12,6 @@ class Day(models.Model):
     """
     date = models.DateField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    challenge = models.OneToOneField('Challenge', on_delete=models.SET_NULL, null=True, blank=True)
-    task = models.ForeignKey('Task', on_delete=models.SET_NULL, null=True, blank=True)
-    frog = models.ForeignKey('Frog', on_delete=models.SET_NULL, null=True, blank=True)
-    steak = models.ForeignKey('Steak', on_delete=models.SET_NULL, null=True, blank=True)
-    joy = models.ForeignKey('Joy', on_delete=models.SET_NULL, null=True, blank=True)
-    memory = models.OneToOneField('Memory', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.date)
@@ -29,6 +23,7 @@ class Challenge(models.Model):
     """
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    day = models.OneToOneField(Day, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -45,6 +40,7 @@ class Task(models.Model):
         ('h', 'Hard'),
     )
     task_type = models.CharField(max_length=1, choices=TASK_TYPE, default='f')
+    day = models.ForeignKey(Day, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -57,6 +53,7 @@ class Frog(models.Model):
     name = models.CharField(max_length=200, help_text="Eat your frog!")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     done = models.BooleanField(default=False)
+    day = models.ForeignKey(Day, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -68,6 +65,7 @@ class Steak(models.Model):
     """
     name = models.CharField(max_length=200, help_text="Cut your elephant into small steaks")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    day = models.ForeignKey(Day, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -79,6 +77,7 @@ class Joy(models.Model):
     """
     name = models.CharField(max_length=200, help_text="Take your award")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    day = models.ForeignKey(Day, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -91,6 +90,7 @@ class Memory(models.Model):
     """
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    day = models.OneToOneField(Day, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
