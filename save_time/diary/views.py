@@ -8,18 +8,22 @@ from django.views import generic
 
 from .models import Frog, Day, Task
 
+today = date.today()
+
+
 # Create your views here.
 @login_required
-def index(request):
+def index(request, url_day=str(today)):
     num_frogs = Frog.objects.filter(user=request.user).count()
-    frogs = Frog.objects.filter(user=request.user)
-    tasks = Task.objects.filter(user=request.user)
-    day = Day.objects.filter(date=date.today()).get()
+    frogs = Frog.objects.filter(user=request.user, day__date=url_day)
+    tasks = Task.objects.filter(user=request.user, day__date=url_day)
+    day = Day.objects.filter(date=url_day).get()
     return render(request, 'index.html', context={'word': 'atatattatat',
                                                   'num_frogs': num_frogs,
                                                   'frogs': frogs,
                                                   'tasks': tasks,
                                                   'day': day,
+                                                  'url_day': url_day,
                                                   })
 
 

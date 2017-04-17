@@ -5,6 +5,7 @@
     <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
 {% endif %}
 <li>{{word}}</li>
+<h1>url_day: {{ url_day }}</h1>
 <h2>Day: {{day.date}}</h2>
 {% for fr in frogs %}
     <h2>FROG iterable: {{ fr }}</h2>
@@ -17,7 +18,7 @@
 Your tasks!
 <h3>{% for t in tasks %}
     <ul>
-        <li>{{ t }} ({{ t.task_type }})</li>
+        <li>{{ t }}, {{ t.day }} ({{ t.task_type }})</li>
     </ul>
 {% endfor %}
 </h3>
