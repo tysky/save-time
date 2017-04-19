@@ -10,7 +10,7 @@ class Day(models.Model):
     frogs, steak, main task of the day (challenge), main event of the day (for memory),
     awards for completing tasks.
     """
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
 
     def __str__(self):
         return str(self.date)

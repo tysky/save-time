@@ -10,6 +10,7 @@ class ChallengeInstanceInline(admin.TabularInline):
     model = Challenge
 
 class DayAdmin(admin.ModelAdmin):
+    list_display = ('date',)
     inlines = [TaskInstanceInline, ChallengeInstanceInline]
 
 admin.site.register(Day, DayAdmin)
