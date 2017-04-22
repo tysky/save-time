@@ -16,9 +16,17 @@
 <form action="" method="post">
     {% csrf_token %}
     <table>
-        {{ form }}
+        {{ form_date }}
     </table>
     <input type="submit" value="Перейти">
+</form>
+<br>
+<form action="" method="post">
+    {% csrf_token %}
+    <table>
+        {{ form_frog }}
+    </table>
+    <input type="submit" value="Добавить">
 </form>
 
 <h1>url_day: {{ url_day }}</h1>

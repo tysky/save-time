@@ -6,12 +6,22 @@ from .models import Day, Challenge, Task, Frog, Steak, Joy, Memory
 class TaskInstanceInline(admin.TabularInline):
     model = Task
 
+
 class ChallengeInstanceInline(admin.TabularInline):
     model = Challenge
 
+
+class FrogInstanceInline(admin.TabularInline):
+    model = Frog.day.through
+
+
+class FrogAdmin(admin.ModelAdmin):
+    inlines = [FrogInstanceInline]
+
+
 class DayAdmin(admin.ModelAdmin):
     list_display = ('date',)
-    inlines = [TaskInstanceInline, ChallengeInstanceInline]
+    inlines = [FrogInstanceInline, TaskInstanceInline, ChallengeInstanceInline]
 
 admin.site.register(Day, DayAdmin)
 

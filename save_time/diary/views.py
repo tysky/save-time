@@ -1,14 +1,15 @@
 from datetime import date
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 
 from .models import Frog, Day, Task
-from .forms import ChooseDateForm
+from .forms import ChooseDateForm, SetFrogForm
 
 today = date.today()
 
@@ -21,20 +22,32 @@ def index(request, url_day=str(today)):
     tasks = Task.objects.filter(user=request.user, day__date=url_day)
     day = Day.objects.filter(date=url_day).get()
 
+    # frog_model = get_object_or_404(Frog, day__date=url_day)
+
     if request.method == 'POST':
-        form = ChooseDateForm(request.POST)
-        if form.is_valid():
-            date_form = form.cleaned_data['date_form']
+        form_choose_date = ChooseDateForm(request.POST)
+        form_set_frog = SetFrogForm(request.POST)
+
+        if form_set_frog.is_valid():
+            frog_form = form_set_frog.cleaned_data['name']
+            new_day = Day.objects.create(date=today)
+            new_day.save()
+            new_frog = Frog.objects.create(name=frog_form, user=request.user, done=False, day=new_day)
+            new_frog.save()
+        if form_choose_date.is_valid():
+            date_form = form_choose_date.cleaned_data['date_form']
             return HttpResponseRedirect('/day/{0}/'.format(date_form))
     else:
-        form = ChooseDateForm(initial={'date_form': today})
+        form_choose_date = ChooseDateForm(initial={'date_form': today})
+        form_set_frog = SetFrogForm()
     return render(request, 'index.html', context={'word': 'atatattatat',
                                                   'num_frogs': num_frogs,
                                                   'frogs': frogs,
                                                   'tasks': tasks,
                                                   'day': day,
                                                   'url_day': url_day,
-                                                  'form': form,
+                                                  'form_date': form_choose_date,
+                                                  'form_frog': form_set_frog,
                                                   })
 
 
