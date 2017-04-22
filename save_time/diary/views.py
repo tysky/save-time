@@ -22,21 +22,22 @@ def index(request, url_day=str(today)):
     tasks = Task.objects.filter(user=request.user, day__date=url_day)
     day = Day.objects.filter(date=url_day).get()
 
-    # frog_model = get_object_or_404(Frog, day__date=url_day)
-
     if request.method == 'POST':
         form_choose_date = ChooseDateForm(request.POST)
         form_set_frog = SetFrogForm(request.POST)
 
-        if form_set_frog.is_valid():
-            frog_form = form_set_frog.cleaned_data['name']
-            new_day = Day.objects.create(date=today)
-            new_day.save()
-            new_frog = Frog.objects.create(name=frog_form, user=request.user, done=False, day=new_day)
-            new_frog.save()
         if form_choose_date.is_valid():
             date_form = form_choose_date.cleaned_data['date_form']
             return HttpResponseRedirect('/day/{0}/'.format(date_form))
+
+        if form_set_frog.is_valid():
+            day_inst = get_object_or_404(Day, date=url_day)
+            frog_name = form_set_frog.cleaned_data['name']
+            new_day = Frog.objects.create(name=frog_name, user=request.user,
+                                          done=False, day=day_inst)
+            new_day.save()
+            return HttpResponseRedirect('/day/{0}/'.format(url_day))
+
     else:
         form_choose_date = ChooseDateForm(initial={'date_form': today})
         form_set_frog = SetFrogForm()

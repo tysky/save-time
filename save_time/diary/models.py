@@ -10,7 +10,7 @@ class Day(models.Model):
     frogs, steak, main task of the day (challenge), main event of the day (for memory),
     awards for completing tasks.
     """
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return str(self.date)
@@ -56,7 +56,7 @@ class Frog(models.Model):
     name = models.CharField(max_length=200, help_text="Eat your frog!")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     done = models.BooleanField(default=False)
-    day = models.ManyToManyField(Day, blank=True)
+    day = models.ForeignKey(Day, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name

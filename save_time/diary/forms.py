@@ -16,4 +16,4 @@ class ChooseDateForm(forms.Form):
 class SetFrogForm(forms.ModelForm):
     class Meta:
         model = Frog
-        fields = ['name', 'day']
+        fields = ['name']

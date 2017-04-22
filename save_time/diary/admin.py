@@ -10,18 +10,19 @@ class TaskInstanceInline(admin.TabularInline):
 class ChallengeInstanceInline(admin.TabularInline):
     model = Challenge
 
-
-class FrogInstanceInline(admin.TabularInline):
-    model = Frog.day.through
-
-
-class FrogAdmin(admin.ModelAdmin):
-    inlines = [FrogInstanceInline]
+# Representation Frog model in Day instance with ManyToMany relationship
+# class FrogInstanceInline(admin.TabularInline):
+#     model = Frog.day.through
+#
+#
+# class FrogAdmin(admin.ModelAdmin):
+#     inlines = [FrogInstanceInline]
 
 
 class DayAdmin(admin.ModelAdmin):
     list_display = ('date',)
-    inlines = [FrogInstanceInline, TaskInstanceInline, ChallengeInstanceInline]
+    inlines = [TaskInstanceInline, ChallengeInstanceInline]
+
 
 admin.site.register(Day, DayAdmin)
 
