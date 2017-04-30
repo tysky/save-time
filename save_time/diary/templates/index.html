@@ -24,6 +24,8 @@
 
 <h1>url_day: {{ url_day }}</h1>
 <h2>Day: {{day.date}}</h2>
+<h3><a href="{% url 'index' prev_day %}">Previous day</a> </h3>
+<h3><a href="{% url 'index' next_day %}">Next day</a> </h3>
 {% for fr in frogs %}
     <h2>FROG iterable: {{ fr }}</h2>
     <h4>done?: {{ fr.done }}</h4>

@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,6 @@ from .forms import ChooseDateForm, SetFrogForm
 
 today = date.today()
 
-
 # Create your views here.
 @login_required
 def index(request, url_day=str(today)):
@@ -21,6 +20,10 @@ def index(request, url_day=str(today)):
     frogs = Frog.objects.filter(user=request.user, day__date=url_day)
     tasks = Task.objects.filter(user=request.user, day__date=url_day)
     day = Day.objects.filter(date=url_day).get()
+
+    prev_day = day.date - timedelta(days=1)
+    next_day = day.date + timedelta(days=1)
+    # yesterday = Day.objects.filter(date=yes_arg)
 
     if request.method == 'POST':
         form_choose_date = ChooseDateForm(request.POST)
@@ -49,6 +52,8 @@ def index(request, url_day=str(today)):
                                                   'url_day': url_day,
                                                   'form_date': form_choose_date,
                                                   'form_frog': form_set_frog,
+                                                  'prev_day': prev_day,
+                                                  'next_day': next_day,
                                                   })
 
 
