@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 {% if user.is_authenticated %}
 <h1>HELLO {{ user }}</h1>
 <h2><a href="{% url 'index' today %}">TODAY</a> </h2>
@@ -49,5 +51,6 @@ Your tasks!
         <li>{{ t }}, {{ t.day }} ({{ t.task_type }})</li>
     </ul>
 {% endfor %}
+{% endblock %}
 </h3>
 
