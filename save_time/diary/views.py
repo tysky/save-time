@@ -26,14 +26,15 @@ def index(request, url_day=str(today)):
     next_day = day.date + timedelta(days=1)
     # yesterday = Day.objects.filter(date=yes_arg)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and 'btndate' in request.POST:
         form_choose_date = ChooseDateForm(request.POST)
-        form_set_frog = SetFrogForm(request.POST)
-        form_set_task = SetTaskForm(request.POST)
 
         if form_choose_date.is_valid():
             date_form = form_choose_date.cleaned_data['date_form']
             return HttpResponseRedirect('/day/{0}/'.format(date_form))
+
+    elif request.method == 'POST' and 'btntask' in request.POST:
+        form_set_task = SetTaskForm(request.POST)
 
         if form_set_task.is_valid():
             day_inst = get_object_or_404(Day, date=url_day)
@@ -44,6 +45,9 @@ def index(request, url_day=str(today)):
             new_task.save()
             return HttpResponseRedirect('/day/{0}/'.format(url_day))
 
+    elif request.method == 'POST' and 'btnfrog' in request.POST:
+        form_set_frog = SetFrogForm(request.POST)
+
         if form_set_frog.is_valid():
             day_inst = get_object_or_404(Day, date=url_day)
             frog_name = form_set_frog.cleaned_data['name']
@@ -51,6 +55,7 @@ def index(request, url_day=str(today)):
                                           done=False, day=day_inst)
             new_day.save()
             return HttpResponseRedirect('/day/{0}/'.format(url_day))
+
 
     else:
         form_choose_date = ChooseDateForm(initial={'date_form': today})
