@@ -1,5 +1,5 @@
 from django import forms
-from .models import Frog
+from .models import Frog, Task
 
 
 class DateTypeInput(forms.DateInput):
@@ -17,3 +17,9 @@ class SetFrogForm(forms.ModelForm):
     class Meta:
         model = Frog
         fields = ['name']
+
+
+class SetTaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['name', 'task_type']

@@ -9,9 +9,10 @@ from django.core.urlresolvers import reverse
 
 
 from .models import Frog, Day, Task
-from .forms import ChooseDateForm, SetFrogForm
+from .forms import ChooseDateForm, SetFrogForm, SetTaskForm
 
 today = date.today()
+
 
 # Create your views here.
 @login_required
@@ -28,10 +29,20 @@ def index(request, url_day=str(today)):
     if request.method == 'POST':
         form_choose_date = ChooseDateForm(request.POST)
         form_set_frog = SetFrogForm(request.POST)
+        form_set_task = SetTaskForm(request.POST)
 
         if form_choose_date.is_valid():
             date_form = form_choose_date.cleaned_data['date_form']
             return HttpResponseRedirect('/day/{0}/'.format(date_form))
+
+        if form_set_task.is_valid():
+            day_inst = get_object_or_404(Day, date=url_day)
+            task_name = form_set_task.cleaned_data['name']
+            task_type = form_set_task.cleaned_data['task_type']
+            new_task = Task.objects.create(name=task_name, user=request.user,
+                                           task_type=task_type, day=day_inst)
+            new_task.save()
+            return HttpResponseRedirect('/day/{0}/'.format(url_day))
 
         if form_set_frog.is_valid():
             day_inst = get_object_or_404(Day, date=url_day)
@@ -44,6 +55,7 @@ def index(request, url_day=str(today)):
     else:
         form_choose_date = ChooseDateForm(initial={'date_form': today})
         form_set_frog = SetFrogForm()
+        form_set_task = SetTaskForm()
     return render(request, 'index.html', context={'word': 'atatattatat',
                                                   'num_frogs': num_frogs,
                                                   'frogs': frogs,
@@ -52,8 +64,10 @@ def index(request, url_day=str(today)):
                                                   'url_day': url_day,
                                                   'form_date': form_choose_date,
                                                   'form_frog': form_set_frog,
+                                                  'form_task': form_set_task,
                                                   'prev_day': prev_day,
                                                   'next_day': next_day,
+                                                  'today': today,
                                                   })
 
 
