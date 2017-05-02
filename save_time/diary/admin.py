@@ -10,6 +10,9 @@ class TaskInstanceInline(admin.TabularInline):
 class ChallengeInstanceInline(admin.TabularInline):
     model = Challenge
 
+
+
+
 # Representation Frog model in Day instance with ManyToMany relationship
 # class FrogInstanceInline(admin.TabularInline):
 #     model = Frog.day.through
@@ -31,6 +34,11 @@ admin.site.register(Day, DayAdmin)
 class ChallengeAdmin(admin.ModelAdmin):
     list_display = ('name', 'user', 'day')
 
+
+@admin.register(Frog)
+class FrogAdmin(admin.ModelAdmin):
+    list_display = ('name', 'user', 'day')
+
 # admin.site.register(Task)
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
@@ -43,7 +51,6 @@ class TaskAdmin(admin.ModelAdmin):
             'fields': ('user', 'day')
         }),
     )
-admin.site.register(Frog)
 admin.site.register(Steak)
 admin.site.register(Joy)
 admin.site.register(Memory)

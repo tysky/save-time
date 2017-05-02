@@ -1,7 +1,10 @@
 body {
-  padding-top: 50px;
+  font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
 }
-.starter-template {
+/*.starter-template {
   padding: 40px 15px;
   text-align: center;
+}*/
+.navbar-default .navbar-link  {
+  color: deepskyblue;
 }

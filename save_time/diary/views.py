@@ -61,7 +61,7 @@ def index(request, url_day=str(today)):
         form_choose_date = ChooseDateForm(initial={'date_form': today})
         form_set_frog = SetFrogForm()
         form_set_task = SetTaskForm()
-    return render(request, 'diary/index.html', context={'word': 'atatattatat',
+    return render(request, 'diary/index.html', context={
                                                   'num_frogs': num_frogs,
                                                   'frogs': frogs,
                                                   'tasks': tasks,
