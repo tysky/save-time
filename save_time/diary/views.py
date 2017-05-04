@@ -8,8 +8,8 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 
-from .models import Frog, Day, Task
-from .forms import ChooseDateForm, SetFrogForm, SetTaskForm
+from .models import Challenge, Frog, Day, Task, Steak, Joy, Memory
+from .forms import ChooseDateForm, SetFrogForm, SetTaskForm, SetChallengeForm, SetSteakForm, SetJoyForm, SetMemoryForm
 
 today = date.today()
 
@@ -17,9 +17,12 @@ today = date.today()
 # Create your views here.
 @login_required
 def index(request, url_day=str(today)):
-    num_frogs = Frog.objects.filter(user=request.user).count()
+    challenge = Challenge.objects.filter(user=request.user, day__date=url_day)
     frogs = Frog.objects.filter(user=request.user, day__date=url_day)
+    steak = Steak.objects.filter(user=request.user, day__date=url_day)
     tasks = Task.objects.filter(user=request.user, day__date=url_day)
+    joy = Joy.objects.filter(user=request.user, day__date=url_day)
+    memory = Memory.objects.filter(user=request.user, day__date=url_day)
     day = Day.objects.filter(date=url_day).get()
 
     prev_day = day.date - timedelta(days=1)
@@ -45,7 +48,18 @@ def index(request, url_day=str(today)):
             new_task.save()
             return HttpResponseRedirect('/day/{0}/'.format(url_day))
 
-    elif request.method == 'POST' and 'btnfrog' in request.POST:
+    elif request.method == 'POST' and 'btn-challenge' in request.POST:
+        form_set_challenge = SetChallengeForm(request.POST)
+
+        if form_set_challenge.is_valid():
+            day_inst = get_object_or_404(Day, date=url_day)
+            challenge_name = form_set_challenge.cleaned_data['name']
+            new_day = Challenge.objects.create(name=challenge_name, user=request.user,
+                                          day=day_inst)
+            new_day.save()
+            return HttpResponseRedirect('/day/{0}/'.format(url_day))
+
+    elif request.method == 'POST' and 'btn-frog' in request.POST:
         form_set_frog = SetFrogForm(request.POST)
 
         if form_set_frog.is_valid():
@@ -56,20 +70,64 @@ def index(request, url_day=str(today)):
             new_day.save()
             return HttpResponseRedirect('/day/{0}/'.format(url_day))
 
+    elif request.method == 'POST' and 'btn-steak' in request.POST:
+        form_set_steak = SetSteakForm(request.POST)
+
+        if form_set_steak.is_valid():
+            day_inst = get_object_or_404(Day, date=url_day)
+            steak_name = form_set_steak.cleaned_data['name']
+            new_day = Steak.objects.create(name=steak_name, user=request.user,
+                                          day=day_inst)
+            new_day.save()
+            return HttpResponseRedirect('/day/{0}/'.format(url_day))
+
+    elif request.method == 'POST' and 'btn-joy' in request.POST:
+        form_set_joy = SetJoyForm(request.POST)
+
+        if form_set_joy.is_valid():
+            day_inst = get_object_or_404(Day, date=url_day)
+            joy_name = form_set_joy.cleaned_data['name']
+            new_day = Joy.objects.create(name=joy_name, user=request.user,
+                                          day=day_inst)
+            new_day.save()
+            return HttpResponseRedirect('/day/{0}/'.format(url_day))
+
+    elif request.method == 'POST' and 'btn-memory' in request.POST:
+        form_set_memory = SetMemoryForm(request.POST)
+
+        if form_set_memory.is_valid():
+            day_inst = get_object_or_404(Day, date=url_day)
+            memory_name = form_set_memory.cleaned_data['name']
+            new_day = Memory.objects.create(name=memory_name, user=request.user,
+                                          day=day_inst)
+            new_day.save()
+            return HttpResponseRedirect('/day/{0}/'.format(url_day))
 
     else:
         form_choose_date = ChooseDateForm(initial={'date_form': today})
+        form_set_challenge = SetChallengeForm()
         form_set_frog = SetFrogForm()
+        form_set_steak = SetSteakForm()
         form_set_task = SetTaskForm()
+        form_set_joy = SetJoyForm()
+        form_set_memory = SetMemoryForm()
+
     return render(request, 'diary/index.html', context={
-                                                  'num_frogs': num_frogs,
+                                                  'challenge': challenge,
                                                   'frogs': frogs,
                                                   'tasks': tasks,
+                                                  'steak': steak,
+                                                  'joy': joy,
+                                                  'memory': memory,
                                                   'day': day,
                                                   'url_day': url_day,
                                                   'form_date': form_choose_date,
+                                                  'form_challenge': form_set_challenge,
                                                   'form_frog': form_set_frog,
+                                                  'form_steak': form_set_steak,
                                                   'form_task': form_set_task,
+                                                  'form_joy': form_set_joy,
+                                                  'form_memory': form_set_memory,
                                                   'prev_day': prev_day,
                                                   'next_day': next_day,
                                                   'today': today,

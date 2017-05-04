@@ -25,7 +25,7 @@ class Challenge(models.Model):
     """
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    day = models.ForeignKey(Day, on_delete=models.SET_NULL, null=True, blank=True)
+    day = models.OneToOneField(Day, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name

@@ -4,7 +4,11 @@
 {#<h2><a href="{% url 'index' today %}">TODAY</a> </h2>#}
 {##}
 {#{% endif %}#}
-<p>Сегодня {{ day.date }}</p>
+<p class="today">{{ day.date }}</p>
+
+<a class="btn btn-default btn-success" href="{% url 'index' prev_day %}" role="button"><------</a>
+<a class="btn btn-default btn-success" href="{% url 'index' next_day %}" role="button">------></a>
+
 <form action="" method="post">
     {% csrf_token %}
     <table>
@@ -13,13 +17,60 @@
     <input type="submit" name="btndate" value="Перейти">
 </form>
 <br>
-<form action="" method="post">
+
+<ul class="list-group">
+  <li class="list-group-item"><b>Challenge:</b>{% for main in challenge %}
+                                                {{ main.name }}<br>
+                                                {% endfor %}
+    <form action="" method="post">
+        {% csrf_token %}
+            <table>
+                {{ form_challenge }}
+            </table>
+            <input type="submit" name="btn-challenge" value="Добавить">
+    </form>
+  </li>
+
+  <li class="list-group-item"><b>Frogs:</b> <ul>{% for frog in frogs %}
+                                            <li>{{ frog.name }}</li>
+                                            {% endfor %}</ul>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">
+       <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+  </button>
+
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <form action="" method="post">
     {% csrf_token %}
     <table>
         {{ form_frog }}
     </table>
-    <input type="submit" name="btnfrog" value="Добавить">
+    <input type="submit" name="btn-frog" value="Добавить">
 </form>
+
+        </div>
+      </div>
+    </div>
+
+  </li>
+  <li class="list-group-item"><b>Steak</b>: {% for piece in steak %}
+                                        {{ piece.name }}
+                                        {% endfor %}
+      <form action="" method="post">
+        {% csrf_token %}
+            <table>
+                {{ form_steak }}
+            </table>
+            <input type="submit" name="btn-steak" value="Добавить">
+    </form>
+  </li>
+</ul>
+
+
+
+
+
 
 <form action="" method="post">
     {% csrf_token %}
@@ -30,16 +81,8 @@
 </form>
 
 <h1>url_day: {{ url_day }}</h1>
-<h2>Day: {{day.date}}</h2>
-<h3><a href="{% url 'index' prev_day %}">Previous day</a> </h3>
-<h3><a href="{% url 'index' next_day %}">Next day</a> </h3>
-{% for fr in frogs %}
-    <h2>FROG iterable: {{ fr }}</h2>
-    <h4>done?: {{ fr.done }}</h4>
-{% endfor %}
 
-<h3>Frogs: {{num_frogs}}</h3>
-<h3>Frogs: {{frogs}}</h3>
+
 
 Your tasks!
 <h3>{% for t in tasks %}
@@ -47,6 +90,114 @@ Your tasks!
         <li>{{ t }}, {{ t.day }} ({{ t.task_type }})</li>
     </ul>
 {% endfor %}
-{% endblock %}
 </h3>
+
+<table class="table table-bordered">
+  <tr>
+    <th></th>
+    <th>Жесткие задачи</th>
+    <th>Гибкие задачи</th>
+  </tr>
+  <tr>
+    <td>07.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>08.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>09.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>10.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>11.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>12.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>13.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>14.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>15.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>16.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>17.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>18.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>19.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>20.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>21.00</td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+  <li class="list-group-item"><b>Промежуточные радости:</b> <ul>{% for j in joy %}
+                                                            <li>{{ j.name }}</li>
+                                                            {% endfor %}</ul>
+    <form action="" method="post">
+        {% csrf_token %}
+            <table>
+                {{ form_joy }}
+            </table>
+            <input type="submit" name="btn-joy" value="Добавить">
+    </form>
+
+
+  <li class="list-group-item"><b>Мемуарник:</b> <ul>{% for m in memory %}
+                                                            <li>{{ m.name }}</li>
+                                                            {% endfor %}</ul>
+    <form action="" method="post">
+        {% csrf_token %}
+            <table>
+                {{ form_memory }}
+            </table>
+            <input type="submit" name="btn-memory" value="Добавить">
+    </form>
+
+{% endblock %}
+
 

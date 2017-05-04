@@ -8,3 +8,10 @@ body {
 .navbar-default .navbar-link  {
   color: deepskyblue;
 }
+.today{
+  font-size: 2.5em;
+  color: #337ab7;
+}
+.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+    border: 1px solid #337ab7;
+}
